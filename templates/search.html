@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="/static/search.css">
+</head>
+<body>
+    
+    <ul class="ul-nav">
+        <li class="li-nav" style="margin-left: 75%;"><a class="a-nav"  href="/homepage">Home</a></li>
+        <li class="li-nav"><a class="a-nav">Search</a></li>
+        <li class="li-nav"><a class="a-nav" href="/log-in">Log-out</a></li>
+    </ul>
+
+    <div class="box">
+    <div class="search-div">
+    <form action="/search" method="post">
+        <input type="text" name="search" autocomplete="off" class="search" placeholder="Location:">
+        <input type="submit" class="search-sub">
+    </form>
+    </div>
+    
+    <br>
+
+    <div class="results">
+        <table>
+        <form action="/search-" method="post">
+        {% for l in results %}
+        <tr>
+        <th>{{l[1]}}</th>
+        <th><button type="submit" name="add" value={{l[0]}} class="add">ADD</button></th>
+        <th><a target="_blank" href="http://www.google.com/maps/place/{{l[1]}}">MAPS</a></th>
+        </tr>
+        {% endfor %}
+        
+        </form>
+        </table>
+    </div>
+    </div>
+</body>
+</html>
