@@ -3,6 +3,7 @@ import sqlite3
 
 from fuzzywuzzy import fuzz
 import unidecode
+from datetime import datetime
 
 #???
 import smtplib
@@ -36,19 +37,25 @@ def df():
 @app.route("/log-in", methods=["GET", "POST"])
 def LogIn():
     if request.method == "POST":
+        date = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         if request.form.get("button") != None:
             with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
                 smtp.login(sender, passowrd)
                 smtp.sendmail(sender, reciever, email.as_string())
+            conn.execute(f"INSERT INTO log (date, status) VALUES('{date}', '{'Forgot password'}')")
+            conn.commit()
             return redirect("/log-in")
 
         else:
             password = request.form.get("pass")
 
             if password == "0000":
-                #add log !!!
+                conn.execute(f"INSERT INTO log (date, status) VALUES('{date}', '{'Login succesful'}')")
+                conn.commit()
                 return redirect("/homepage")
             else:
+                conn.execute(f"INSERT INTO log (date, status) VALUES('{date}', '{'Incorrect password'}')")
+                conn.commit()
                 return render_template("log-in.html", forgot="Incorrect password")
 
     else:
